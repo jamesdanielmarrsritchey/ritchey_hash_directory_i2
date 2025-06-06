@@ -2,9 +2,9 @@
 
 NAME: Ritchey Hash Directory
 IMPLEMENTATION: 2
-VERSION: 1
-LONG IDENTIFIER: Ritchey Hash Directory i2 v1
-SHORT IDENTIFIER: RHDi2v1
+VERSION: 2
+LONG IDENTIFIER: Ritchey Hash Directory i2 v2
+SHORT IDENTIFIER: RHDi2v2
 AUTHOR: James Daniel Marrs Ritchey
 
 ## Overview
@@ -20,9 +20,10 @@ This project is hereby licensed under the Ritchey Permissive License v19.
 Releases:
 - Project started June 4, 2025.
 - Version 1 started June 4, 2025.
+- Version 2 started June 6, 2025.
 
 Highlighted Changes:
-- 
+- Fixed issue with duplicate files not being included in file data portion of hashing.
 
 ## Notes
 

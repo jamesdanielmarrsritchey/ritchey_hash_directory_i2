@@ -1,13 +1,13 @@
 <?php
 # Meta
-// Name: Ritchey Hash Directory i2 v1
+// Name: Ritchey Hash Directory i2 v2
 // Description: Returns a string on success. Returns "FALSE" on failure.
 // Notes: Optional arguments can be "NULL" to skip them in which case they will use default values.
 // Arguments: Source Folder (required) is the folder to copy files from. Hashing Algorithim (optional) specifies the hashing algorithm to use. Include Structure (optional) specifies if the paths of files should be included in the hashing. Relative Structure (optional) specifies if the structure paths should be trimmed relative to the source_folder when being hashed. Display Errors (optional) specifies if errors should be displayed after the function runs.
 // Arguments (For Machines): source_folder: path, required. hashing_algorithm: string, optional. include_structure: bool, optional. relative_structure: bool, optional. display_errors: bool, optional.
 # Content
-if (function_exists('ritchey_hash_directory_i2_v1') === FALSE){
-function ritchey_hash_directory_i2_v1($source_folder, $hashing_algorithm = NULL, $include_structure = NULL, $relative_structure = NULL, $display_errors = NULL){
+if (function_exists('ritchey_hash_directory_i2_v2') === FALSE){
+function ritchey_hash_directory_i2_v2($source_folder, $hashing_algorithm = NULL, $include_structure = NULL, $relative_structure = NULL, $display_errors = NULL){
 	## Prep
 	$errors = array();
 	$location = realpath(dirname(__FILE__));
@@ -68,7 +68,15 @@ function ritchey_hash_directory_i2_v1($source_folder, $hashing_algorithm = NULL,
 		foreach($files_and_folders as $value){
 			if (is_file($value) === TRUE){
 				$checksum = hash_file($hashing_algorithm, $value);
-				$files[$checksum] = $value;
+				while (isset($files[$checksum]) === TRUE){
+					$checksum = hash($hashing_algorithm, $checksum);
+				}
+				if (isset($files[$checksum]) === TRUE){
+					$errors[] = "task - files[{$checksum}]";
+					goto cleanup;
+				} else {
+					$files[$checksum] = $value;
+				}
 			}
 		}
 		ksort($files, SORT_REGULAR);
@@ -105,12 +113,12 @@ function ritchey_hash_directory_i2_v1($source_folder, $hashing_algorithm = NULL,
 	if ($display_errors === TRUE){
 		if (@empty($errors) === FALSE){
 			$message = @implode(", ", $errors);
-			if (function_exists('ritchey_hash_directory_i2_v1_format_error') === FALSE){
-				function ritchey_hash_directory_i2_v1_format_error($errno, $errstr){
+			if (function_exists('ritchey_hash_directory_i2_v2_format_error') === FALSE){
+				function ritchey_hash_directory_i2_v2_format_error($errno, $errstr){
 					echo $errstr;
 				}
 			}
-			set_error_handler("ritchey_hash_directory_i2_v1_format_error");
+			set_error_handler("ritchey_hash_directory_i2_v2_format_error");
 			trigger_error($message, E_USER_ERROR);
 		}
 	}
